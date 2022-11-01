@@ -66,12 +66,36 @@ public:
         return *this;
     }
 
+    friend ostream& operator <<(ostream& os, const Film &film) {
+        os << "Film: " << film.getTitlu()
+             << " | Regizor: " << film.getNumeRegizor()
+             << " | An: " << film.getAnAparitie()
+             << " | Durata: " << film.getDurataMinute() << " minute.\n";
+
+        return os;
+    }
+
     void afiseaza() const
     {
-        cout << "Film: " << this->getTitlu()
-             << " | Regizor: " << this->getNumeRegizor()
-             << " | An: " << this->getAnAparitie()
-             << " | Durata: " << this->getDurataMinute() << " minute.\n";
+        cout << *this;
+    }
+
+    friend istream& operator >>(istream& is, Film &film){
+        cout << "Titlu: ";
+        char buff[255];
+        fflush(stdin);
+        cin.getline(buff, 256);
+        film.titlu = new char[strlen(buff) + 1];
+        strcpy(film.titlu, buff);
+        cout << "Regizor: ";
+        fflush(stdin);
+        cin.getline(buff, 256);
+        film.numeRegizor = new char[strlen(buff) + 1];
+        strcpy(film.numeRegizor, buff);
+        cout << "An: ";
+        cin >> film.anAparitie;
+        cout << "Durata: ";
+        cin >> film.durataMinute;
     }
 
     char *getTitlu() const
@@ -181,13 +205,12 @@ public:
 
         for (unsigned int i = 0; i < nrFilme; i ++)
         {
-            cout << "Film #" << i << ": ";
+            cout << "Film #" << i + 1 << endl;
 
-            char date[256];
-            fflush(stdin);
-            cin.getline(date, 256);
+            Film filmNou;
+            cin >> filmNou;
 
-            listaFilme[i] = Film(date);
+            listaFilme[i] = filmNou;
         }
     }
 
